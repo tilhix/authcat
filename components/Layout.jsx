@@ -10,6 +10,7 @@ const Layout = ({ children }) => (
     <style jsx>{`
       .container {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 1em;

@@ -25,6 +25,15 @@ const authenticate = async (email, password) => {
   })
 }
 
+const getProfile = async (email) => {
+  const { data } = await axios.get('https://jsonplaceholder.typicode.com/users')
+  return data.find(user => {
+    if (email === user.email) {
+      return user
+    }
+  })
+}
+
 app.prepare().then(() => {
   const server = express();
 
@@ -46,6 +55,16 @@ app.prepare().then(() => {
       res.cookie('token', userData, COOKIE_OPTIONS)
       res.json(userData)
     }
+  })
+
+  server.get('/api/profile', async (req, res) => {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    if (token && token.email) {
+      const userProfile = await getProfile(token.email)
+      return res.json({user: userProfile})
+    }
+    res.status(404).send('profile not found')
   })
 
   server.get('*', (req,res) => {

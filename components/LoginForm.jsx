@@ -1,22 +1,39 @@
 import { useState } from "react";
 import { loginUser } from "../util/auth";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const [state, setState] = useState({
     email: process.env.NEXT_PUBLIC_EMAIL,
     password: process.env.NEXT_PUBLIC_PASSWORD,
+    error: "",
+    isLoading: false,
   });
 
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
-    setState({ ...state, [name]: value });
+    setState({ ...state, error: "", [name]: value });
   };
 
   const handleSubmit = (event) => {
     const { email, password } = state;
+    setState({ ...state, isLoading: true });
     event.preventDefault();
-    loginUser(email, password);
+    loginUser(email, password)
+      .then(() => {
+        router.push("/profile");
+      })
+      .catch((err) => {
+        showError(err);
+      });
+  };
+
+  const showError = (err) => {
+    const error = (err.response && err.response.data) || err.message;
+    setState({ ...state, isLoading: false, error });
   };
 
   return (
@@ -39,13 +56,20 @@ const LoginForm = () => {
           onChange={handleChange}
         />
       </div>
-      <button type="submit">submit</button>
+      <button disabled={state.isLoading} type="submit">
+        {state.isLoading ? "Sending" : "Submit"}
+      </button>
+      {state.error && <div className="error">{state.error}</div>}
       <style jsx>{`
         form {
           padding: 1em;
         }
         form input {
           margin-bottom: 1em;
+        }
+        .error {
+          color: red;
+          margin-top: 1em;
         }
       `}</style>
     </form>
