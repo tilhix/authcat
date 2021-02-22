@@ -3,6 +3,19 @@ axios.defaults.withCredentials = true
 
 const WINDOW_USER_VARIABLE = '__USER__';
 
+export const getUserToken = req => {
+  if (req !== undefined) {
+    const { signedCookies = {} } = req;
+    const { token = {} } = signedCookies;
+    return { user: token }
+  }
+  return {}
+}
+
+export const getUserScript = user => {
+  return `${WINDOW_USER_VARIABLE} = ${JSON.stringify(user)};`
+}
+
 export const loginUser = async (email, password) => {
   const { data } = await axios.post('/api/login', {email, password})
   if (typeof window !== 'undefined') {
