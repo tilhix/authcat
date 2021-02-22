@@ -9,7 +9,7 @@ const app = next({ dev })
 const handle = app.getRequestHandler();
 
 const AUTH_USER_TYPE = 'authenticated'
-const COOKIE_SECRET = process.env.COOKIE_SECRET
+const COOKIE_SECRET = process.env.COOKIE_SECRET || 'secret'
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: !dev,

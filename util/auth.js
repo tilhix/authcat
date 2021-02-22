@@ -1,9 +1,13 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true
 
+const WINDOW_USER_VARIABLE = '__USER__';
+
 export const loginUser = async (email, password) => {
   const { data } = await axios.post('/api/login', {email, password})
-  return data
+  if (typeof window !== 'undefined') {
+    window[WINDOW_USER_VARIABLE] = data || {}
+  }
 }
 
 export const getUserProfile = async () => {
