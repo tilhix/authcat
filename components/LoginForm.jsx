@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginUser } from "../util/auth";
+import { loginUser } from "../lib/auth";
 import { useRouter } from "next/router";
 
 const LoginForm = () => {
@@ -66,10 +66,28 @@ const LoginForm = () => {
         }
         form input {
           margin-bottom: 1em;
+          padding: 0.5em 1em;
+          font-size: 16px;
+          border-radius: 4px;
+          outline: none;
+          box-shadow: none;
+          border: 1px solid #dbe2ef;
+          background: #f9f7f7;
         }
         .error {
           color: red;
           margin-top: 1em;
+        }
+        button {
+          padding: 0.65em 1.4em;
+          border: transparent;
+          color: #f9f7f7;
+          background: #3f72af;
+          font-size: 16px;
+          border-radius: 4px;
+        }
+        button:hover {
+          background: #6290c7;
         }
       `}</style>
     </form>

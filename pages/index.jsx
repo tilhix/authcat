@@ -1,11 +1,12 @@
 import Layout from "../components/Layout";
 import Link from "next/link";
 import Head from "next/head";
+import { authInitialProps } from "../lib/auth";
 
-const Index = () => (
-  <Layout title="Home">
+const Index = (props) => (
+  <Layout title="Home" {...props}>
     <Head>
-      <title>Home | NextAuth</title>
+      <title>Home | AuthCat</title>
     </Head>
     <p>lorem ipsum</p>
     <Link href="/profile">
@@ -13,5 +14,7 @@ const Index = () => (
     </Link>
   </Layout>
 );
+
+Index.getInitialProps = authInitialProps();
 
 export default Index;

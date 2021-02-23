@@ -1,29 +1,31 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { logoutUser } from "../lib/auth";
 
-const Layout = ({ children, title }) => {
-  const router = useRouter();
-  const handleClick = () => {
-    router.push("/login");
-  };
+const Layout = ({ children, title, auth }) => {
+  const { user = {} } = auth || {};
 
   return (
     <div className="container">
       <nav>
         <span>
-          Welcome, <strong>guest</strong>
+          Welcome, <strong>{user.name || "Guest"}</strong>
         </span>
         <div>
           <Link href="/">
             <a>Home</a>
           </Link>
-          <Link href="/profile">
-            <a>Profile</a>
-          </Link>
-          <button onClick={handleClick}>Logout</button>
-          <Link href="/login">
-            <a>Login</a>
-          </Link>
+          {user.email ? (
+            <>
+              <Link href="/profile">
+                <a>Profile</a>
+              </Link>
+              <button onClick={logoutUser}>Logout</button>
+            </>
+          ) : (
+            <Link href="/login">
+              <a>Login</a>
+            </Link>
+          )}
         </div>
       </nav>
       <div className="children">
@@ -31,7 +33,7 @@ const Layout = ({ children, title }) => {
         {children}
       </div>
       <footer>
-        <span>© 2020</span>
+        <span>© 2021</span>
       </footer>
       <style jsx global>{`
         body {
@@ -45,12 +47,21 @@ const Layout = ({ children, title }) => {
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
-          background: #f9f7f7;
+          background: linear-gradient(
+            130deg,
+            #dbe2ef,
+            #f9f7f7 20%,
+            #f9f7f7 65%,
+            #dbe2ef 90%,
+            #efdbe2
+          );
           width: 100%;
           height: 100vh;
           max-width: 1200px;
           margin: 0 auto;
           box-sizing: border-box;
+          position: relative;
+          overflow: hidden;
         }
         .container * {
           box-sizing: border-box;

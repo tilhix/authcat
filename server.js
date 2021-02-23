@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000
 const app = next({ dev })
 const handle = app.getRequestHandler();
 
-const AUTH_USER_TYPE = 'authenticated'
+const AUTH_USER_TYPE = process.env.NEXT_PUBLIC_TYPE || ''
 const COOKIE_SECRET = process.env.COOKIE_SECRET || 'secret'
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -45,7 +45,7 @@ app.prepare().then(() => {
     const user = await authenticate(email, password)
 
     if (!user) {
-      res.status(403).send('invalid email or password')
+      res.status(403).send('Invalid email or password')
     } else {
       const userData = {
         name: user.name,
@@ -57,6 +57,11 @@ app.prepare().then(() => {
     }
   })
 
+  server.post('/api/logout', (req,res) => {
+    res.clearCookie('token', COOKIE_OPTIONS);
+    res.sendStatus(204)
+  })
+
   server.get('/api/profile', async (req, res) => {
     const { signedCookies = {} } = req;
     const { token } = signedCookies;
@@ -64,7 +69,7 @@ app.prepare().then(() => {
       const userProfile = await getProfile(token.email)
       return res.json({user: userProfile})
     }
-    res.status(404).send('profile not found')
+    res.sendStatus(404)
   })
 
   server.get('*', (req,res) => {
