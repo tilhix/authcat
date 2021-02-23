@@ -4,7 +4,8 @@
   "description": "next authentication",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "next build"
   },
   "author": "kotek",
   "license": "ISC",
