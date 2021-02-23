@@ -6,7 +6,7 @@ import { authInitialProps } from "../lib/auth";
 const Login = (props) => (
   <Layout title="Login" {...props}>
     <Head>
-      <title>Login | NextAuth</title>
+      <title>Login | AuthCat</title>
     </Head>
     <LoginForm />
   </Layout>

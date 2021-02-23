@@ -13,7 +13,7 @@ const Profile = (props) => {
   return (
     <Layout title="Profile" {...props}>
       <Head>
-        <title>Profile | NextAuth</title>
+        <title>Profile | AuthCat</title>
       </Head>
       {user && <pre>{JSON.stringify(user, null, 2)}</pre>}
       <style jsx>{`
